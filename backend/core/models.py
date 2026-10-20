@@ -28,7 +28,7 @@ class SyncLog(models.Model):
     items_processed = models.PositiveIntegerField(default=0)
     error_message = models.TextField(blank=True)
 
-     class Meta:
+    class Meta:
         ordering = ["-started_at"]
         indexes = [models.Index(fields=["source", "-started_at"])]
 

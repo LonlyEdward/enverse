@@ -39,6 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'content',
+    'core',
+    'movies',
+    'tv',
+    'anime',
+    'games',
+    'sports',
 ]
 
 AUTH_USER_MODEL = "accounts.User"
