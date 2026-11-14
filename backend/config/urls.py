@@ -14,6 +14,7 @@ from core import health
 api_v1_patterns = [
     path("health/", health.live, name="health-live"),
     path("health/ready/", health.ready, name="health-ready"),
+    path("", include("accounts.urls")),
 ]
 
 urlpatterns = [

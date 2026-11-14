@@ -138,7 +138,11 @@ else:
 # cache.clear() issues FLUSHDB, which on database 0 would wipe the Celery queue.
 
 REDIS_URL = os.environ.get("REDIS_URL", "")
-if REDIS_URL:
+if TESTING:
+    # Tests must not depend on (or clobber) a shared Redis; an in-process cache
+    # keeps throttle counters and cached values isolated per test run.
+    CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+elif REDIS_URL:
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
