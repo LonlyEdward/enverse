@@ -30,6 +30,9 @@ class MovieQuerySet(models.QuerySet):
 
 class Movie(SyncedContent):
     release_date = models.DateField(null=True, blank=True, db_index=True)
+    # When a release date shifts, the sync copies the old value here so Phase 10
+    # notifications can detect "date changed" events (games already track this).
+    previous_release_date = models.DateField(null=True, blank=True)
     rating = models.FloatField(null=True, blank=True)
     trailer_youtube_key = models.CharField(max_length=20, blank=True)
 

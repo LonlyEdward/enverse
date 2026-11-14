@@ -12,7 +12,6 @@ from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
-from celery.schedules import crontab
 from django.core.exceptions import ImproperlyConfigured
 
 from config.env import env_bool, env_int, env_list, with_redis_db
@@ -293,27 +292,11 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 
 # Static schedule with Celery's built-in scheduler (django-celery-beat does not
-# support Django 6.1). Task modules are added phase by phase; beat schedules by
-# task name, so listing a task before its module exists is harmless to beat.
-CELERY_BEAT_SCHEDULE = {
-    "sync-movies": {"task": "movies.tasks.sync_movies", "schedule": crontab(minute=0, hour="*/6")},
-    "sync-tv": {"task": "tv.tasks.sync_tv", "schedule": crontab(minute=15, hour="*/6")},
-    "sync-anime": {"task": "anime.tasks.sync_anime", "schedule": crontab(minute=30, hour="*/2")},
-    "sync-games": {"task": "games.tasks.sync_games", "schedule": crontab(minute=45, hour="3,15")},
-    "sync-football": {"task": "sports.tasks.sync_football", "schedule": crontab(minute=5, hour="*/3")},
-    "generate-notifications": {
-        "task": "notifications.tasks.generate_notifications",
-        "schedule": crontab(minute="*/10"),
-    },
-    "dispatch-notifications": {
-        "task": "notifications.tasks.dispatch_notifications",
-        "schedule": crontab(minute="3-59/10"),
-    },
-    "recompute-recommendations": {
-        "task": "recommendations.tasks.recompute_recommendations",
-        "schedule": crontab(minute=30, hour=2),
-    },
-}
+# support Django 6.1). Entries are added in the phase that creates the task they
+# reference (see docs/BUILD_PLAN.md section 20 for the full target schedule), so
+# the schedule only ever names tasks that actually exist and beat never dispatches
+# to an unregistered task. Each phase imports `crontab` from `celery.schedules`.
+CELERY_BEAT_SCHEDULE = {}
 
 
 # --- Logging ----------------------------------------------------------------
