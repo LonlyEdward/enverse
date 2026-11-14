@@ -16,5 +16,15 @@ class UserAdmin(DjangoUserAdmin):
     )
 
 
-admin.site.register(GenrePreference)
-admin.site.register(PlatformPreference)
+@admin.register(GenrePreference)
+class GenrePreferenceAdmin(admin.ModelAdmin):
+    list_display = ("user", "content_type", "genre")
+    list_filter = ("content_type",)
+    search_fields = ("user__email", "genre")
+
+
+@admin.register(PlatformPreference)
+class PlatformPreferenceAdmin(admin.ModelAdmin):
+    list_display = ("user", "platform")
+    list_filter = ("platform",)
+    search_fields = ("user__email", "platform")

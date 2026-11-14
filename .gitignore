@@ -14,3 +14,4 @@ media/
 .coverage
 .idea/
 .vscode/
+celerybeat-schedule*

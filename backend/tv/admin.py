@@ -16,4 +16,8 @@ class TVShowAdmin(admin.ModelAdmin):
     inlines = [TVSeasonInline]
 
 
-admin.site.register(TVSeason)
+@admin.register(TVSeason)
+class TVSeasonAdmin(admin.ModelAdmin):
+    list_display = ("show", "season_number", "air_date", "state")
+    list_filter = ("state",)
+    search_fields = ("show__title",)

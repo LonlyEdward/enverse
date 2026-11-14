@@ -1,22 +1,22 @@
-"""
-URL configuration for config project.
+"""Root URL configuration.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+All API routes live under ``/api/v1/``. Each app contributes its own include as
+its phase lands; for now only the health checks exist.
 """
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+
+from core import health
+
+# Everything under /api/v1/. Health is wired directly because it is a pair of
+# plain views; feature apps are added here with include() as they are built.
+api_v1_patterns = [
+    path("health/", health.live, name="health-live"),
+    path("health/ready/", health.ready, name="health-ready"),
+]
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("api/v1/", include((api_v1_patterns, "api"), namespace="v1")),
 ]
