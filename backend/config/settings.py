@@ -243,6 +243,7 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "EnVerse <no-reply@env
 # Used by the sync tasks (added per phase). When a key is missing, the matching
 # sync logs a warning and exits cleanly; tests never call the live APIs.
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "")
+RAWG_API_KEY = os.environ.get("RAWG_API_KEY", "")
 
 
 # --- Django REST Framework --------------------------------------------------
@@ -307,6 +308,7 @@ CELERY_BEAT_SCHEDULE = {
     "sync-movies": {"task": "movies.tasks.sync_movies", "schedule": crontab(minute=0, hour="*/6")},
     "sync-tv": {"task": "tv.tasks.sync_tv", "schedule": crontab(minute=15, hour="*/6")},
     "sync-anime": {"task": "anime.tasks.sync_anime", "schedule": crontab(minute=30, hour="*/2")},
+    "sync-games": {"task": "games.tasks.sync_games", "schedule": crontab(minute=45, hour="3,15")},
 }
 
 
