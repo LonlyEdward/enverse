@@ -12,6 +12,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
+from celery.schedules import crontab
 from django.core.exceptions import ImproperlyConfigured
 
 from config.env import env_bool, env_int, env_list, with_redis_db
@@ -238,6 +239,12 @@ else:
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "EnVerse <no-reply@enverse.local>")
 
 
+# --- External content APIs ---
+# Used by the sync tasks (added per phase). When a key is missing, the matching
+# sync logs a warning and exits cleanly; tests never call the live APIs.
+TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "")
+
+
 # --- Django REST Framework --------------------------------------------------
 
 REST_FRAMEWORK = {
@@ -295,8 +302,10 @@ CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 # support Django 6.1). Entries are added in the phase that creates the task they
 # reference (see docs/BUILD_PLAN.md section 20 for the full target schedule), so
 # the schedule only ever names tasks that actually exist and beat never dispatches
-# to an unregistered task. Each phase imports `crontab` from `celery.schedules`.
-CELERY_BEAT_SCHEDULE = {}
+# to an unregistered task.
+CELERY_BEAT_SCHEDULE = {
+    "sync-movies": {"task": "movies.tasks.sync_movies", "schedule": crontab(minute=0, hour="*/6")},
+}
 
 
 # --- Logging ----------------------------------------------------------------
