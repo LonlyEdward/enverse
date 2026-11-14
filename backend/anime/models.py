@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from content.models import SyncedContent
@@ -24,6 +25,10 @@ class Anime(SyncedContent):
     season_year = models.PositiveSmallIntegerField(null=True, blank=True)
     next_airing_episode_number = models.PositiveIntegerField(null=True, blank=True)
     next_airing_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    studios = ArrayField(models.CharField(max_length=100), default=list, blank=True)
+    episodes_total = models.PositiveIntegerField(null=True, blank=True)
+    rating = models.FloatField(null=True, blank=True)
+    banner_url = models.URLField(max_length=500, blank=True)
 
     class Meta:
         ordering = ["title"]

@@ -17,6 +17,7 @@ api_v1_patterns = [
     path("", include("accounts.urls")),
     path("", include("movies.urls")),
     path("", include("tv.urls")),
+    path("", include("anime.urls")),
 ]
 
 urlpatterns = [
