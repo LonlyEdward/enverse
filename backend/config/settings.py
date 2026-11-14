@@ -305,6 +305,7 @@ CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 # to an unregistered task.
 CELERY_BEAT_SCHEDULE = {
     "sync-movies": {"task": "movies.tasks.sync_movies", "schedule": crontab(minute=0, hour="*/6")},
+    "sync-tv": {"task": "tv.tasks.sync_tv", "schedule": crontab(minute=15, hour="*/6")},
 }
 
 

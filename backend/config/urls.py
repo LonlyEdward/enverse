@@ -16,6 +16,7 @@ api_v1_patterns = [
     path("health/ready/", health.ready, name="health-ready"),
     path("", include("accounts.urls")),
     path("", include("movies.urls")),
+    path("", include("tv.urls")),
 ]
 
 urlpatterns = [

@@ -76,6 +76,24 @@ class TMDBClient:
     def movie_detail(self, movie_id):
         return self._get(f"/movie/{movie_id}", {"append_to_response": "videos,credits"})
 
+    # --- TV ---------------------------------------------------------------
+
+    def on_the_air(self, page=1):
+        return self._get("/tv/on_the_air", {"page": page})
+
+    def popular_tv(self, page=1):
+        return self._get("/tv/popular", {"page": page})
+
+    def trending_tv(self):
+        return self._get("/trending/tv/week")
+
+    def tv_genre_list(self):
+        data = self._get("/genre/tv/list")
+        return {g["id"]: g["name"] for g in data.get("genres", []) if "id" in g and g.get("name")}
+
+    def tv_detail(self, tv_id):
+        return self._get(f"/tv/{tv_id}", {"append_to_response": "videos"})
+
     # --- image helpers -----------------------------------------------------
 
     def _image_url(self, path, size):
