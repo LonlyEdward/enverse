@@ -1,13 +1,13 @@
 import { ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import type { ContentSummary } from '@/api/types'
+import type { CardItem } from '@/api/types'
 import { PosterCard } from './PosterCard'
 import { PosterSkeleton } from './Skeleton'
 
 interface PosterRailProps {
   title: string
-  items?: ContentSummary[]
+  items?: CardItem[]
   loading?: boolean
   viewAllTo?: string
   /** Accent colour for the heading marker (per content type). */

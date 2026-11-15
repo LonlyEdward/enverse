@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import type { ContentSummary } from '@/api/types'
+import type { CardItem } from '@/api/types'
 import { cn } from '@/lib/cn'
 import { contentMeta } from '@/lib/contentTypes'
 import { detailPath } from '@/lib/routes'
 
 /** A poster-first card: the artwork carries the page, with a thin accent rail
  *  marking the content type and the title/subtitle below. */
-export function PosterCard({ item }: { item: ContentSummary }) {
+export function PosterCard({ item }: { item: CardItem }) {
   const [loaded, setLoaded] = useState(false)
   const [broken, setBroken] = useState(false)
   const meta = contentMeta(item.content_type)
