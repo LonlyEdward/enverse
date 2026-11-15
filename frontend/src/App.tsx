@@ -20,6 +20,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage'
 import { OnboardingPage } from '@/pages/OnboardingPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
+import { SearchPage } from '@/pages/SearchPage'
 import { TeamDetailPage } from '@/pages/TeamDetailPage'
 import { VerifyEmailPage } from '@/pages/VerifyEmailPage'
 import { ThemeProvider } from '@/lib/theme'
@@ -45,10 +46,7 @@ function App() {
                     path="reset-password"
                     element={<ResetPasswordPage />}
                   />
-                  <Route
-                    path="search"
-                    element={<ComingSoon title="Search" />}
-                  />
+                  <Route path="search" element={<SearchPage />} />
 
                   <Route path="movies" element={<MoviesPage />} />
                   <Route
