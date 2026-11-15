@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "games",
     "sports",
     "library",
+    "notifications",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
@@ -312,6 +313,8 @@ CELERY_BEAT_SCHEDULE = {
     "sync-anime": {"task": "anime.tasks.sync_anime", "schedule": crontab(minute=30, hour="*/2")},
     "sync-games": {"task": "games.tasks.sync_games", "schedule": crontab(minute=45, hour="3,15")},
     "sync-football": {"task": "sports.tasks.sync_football", "schedule": crontab(minute=5, hour="*/3")},
+    "generate-notifications": {"task": "notifications.tasks.generate_notifications", "schedule": crontab(minute="*/10")},
+    "dispatch-notifications": {"task": "notifications.tasks.dispatch_notifications", "schedule": crontab(minute="2-59/10")},
 }
 
 
