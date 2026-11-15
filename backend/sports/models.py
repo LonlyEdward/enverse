@@ -20,12 +20,20 @@ class FootballTeam(TimeStampedModel):
 class FootballFixture(TimeStampedModel):
     class Status(models.TextChoices):
         SCHEDULED = "scheduled", "Scheduled"
+        LIVE = "live", "Live"
         FINISHED = "finished", "Finished"
+        POSTPONED = "postponed", "Postponed"
+        CANCELLED = "cancelled", "Cancelled"
 
     external_id = models.CharField(max_length=50, unique=True)
     home_team = models.ForeignKey(FootballTeam, on_delete=models.CASCADE, related_name="home_fixtures")
     away_team = models.ForeignKey(FootballTeam, on_delete=models.CASCADE, related_name="away_fixtures")
     competition = models.CharField(max_length=100, blank=True)
+    # API-Football's numeric league id, kept so competitions can be grouped and
+    # queried without string-matching the display name.
+    league_external_id = models.PositiveIntegerField(null=True, blank=True, db_index=True)
+    round = models.CharField(max_length=100, blank=True)
+    venue = models.CharField(max_length=200, blank=True)
     kickoff_at = models.DateTimeField(db_index=True)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.SCHEDULED, db_index=True)
     home_score = models.PositiveSmallIntegerField(null=True, blank=True)

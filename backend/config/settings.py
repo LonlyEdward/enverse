@@ -244,6 +244,7 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "EnVerse <no-reply@env
 # sync logs a warning and exits cleanly; tests never call the live APIs.
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "")
 RAWG_API_KEY = os.environ.get("RAWG_API_KEY", "")
+API_FOOTBALL_KEY = os.environ.get("API_FOOTBALL_KEY", "")
 
 
 # --- Django REST Framework --------------------------------------------------
@@ -309,6 +310,7 @@ CELERY_BEAT_SCHEDULE = {
     "sync-tv": {"task": "tv.tasks.sync_tv", "schedule": crontab(minute=15, hour="*/6")},
     "sync-anime": {"task": "anime.tasks.sync_anime", "schedule": crontab(minute=30, hour="*/2")},
     "sync-games": {"task": "games.tasks.sync_games", "schedule": crontab(minute=45, hour="3,15")},
+    "sync-football": {"task": "sports.tasks.sync_football", "schedule": crontab(minute=5, hour="*/3")},
 }
 
 

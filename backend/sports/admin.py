@@ -11,5 +11,6 @@ class FootballTeamAdmin(admin.ModelAdmin):
 
 @admin.register(FootballFixture)
 class FootballFixtureAdmin(admin.ModelAdmin):
-    list_display = ("home_team", "away_team", "kickoff_at", "status", "home_score", "away_score")
+    list_display = ("home_team", "away_team", "competition", "round", "kickoff_at", "status", "home_score", "away_score")
     list_filter = ("status", "competition")
+    search_fields = ("home_team__name", "away_team__name", "external_id")
