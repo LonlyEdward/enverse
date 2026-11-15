@@ -21,6 +21,7 @@ api_v1_patterns = [
     path("", include("games.urls")),
     path("", include("sports.urls")),
     path("", include("library.urls")),
+    path("", include("content.urls")),
 ]
 
 urlpatterns = [
