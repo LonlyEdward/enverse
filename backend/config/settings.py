@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "anime",
     "games",
     "sports",
+    "library",
 ]
 
 AUTH_USER_MODEL = "accounts.User"

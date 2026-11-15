@@ -13,8 +13,9 @@ from collections import defaultdict
 
 from django.apps import apps
 
-# content_type string -> (app_label, model_name). Keep in sync with
-# core.choices.ContentType. Football is handled separately (see module docstring).
+# content_type string -> (app_label, model_name) for the discovery-facing
+# ``SyncedContent`` types. Search, trending and the genre metadata iterate these,
+# so they only ever see models that have title/poster_url/popularity fields.
 CONTENT_MODELS = {
     "movie": ("movies", "Movie"),
     "tv": ("tv", "TVShow"),
@@ -24,20 +25,48 @@ CONTENT_MODELS = {
 
 CONTENT_TYPES = tuple(CONTENT_MODELS)
 
-# Reverse lookup (app_label, model_name_lower) -> content_type, for summarize().
+# Content types that a user can keep in their library (favourite/follow) but that
+# are NOT ``SyncedContent``: a football "item" is a team. Kept apart from
+# CONTENT_TYPES so the discovery features above never iterate a model without the
+# fields they assume. The library and notifications accept this wider set.
+EXTRA_MODELS = {
+    "football": ("sports", "FootballTeam"),
+}
+
+_ALL_MODELS = {**CONTENT_MODELS, **EXTRA_MODELS}
+LIBRARY_CONTENT_TYPES = tuple(_ALL_MODELS)
+
+# Reverse lookup (app_label, model_name_lower) -> content_type, for content_type_of.
 _MODEL_TO_TYPE = {
     (app_label, model_name.lower()): content_type
-    for content_type, (app_label, model_name) in CONTENT_MODELS.items()
+    for content_type, (app_label, model_name) in _ALL_MODELS.items()
 }
 
 
 def get_content_model(content_type):
-    """Return the Django model class for a content type, or raise ``ValueError``."""
+    """Return the Django model class for any known content type, or raise ``ValueError``.
+
+    Resolves both the discovery types and the library-only extras (football). Code
+    that must stay discovery-only iterates :data:`CONTENT_TYPES`, not this.
+    """
     try:
-        app_label, model_name = CONTENT_MODELS[content_type]
+        app_label, model_name = _ALL_MODELS[content_type]
     except KeyError:
         raise ValueError(f"Unknown content type: {content_type!r}")
     return apps.get_model(app_label, model_name)
+
+
+def content_exists(content_type, object_id):
+    """Return whether a row of ``content_type`` with local id ``object_id`` exists.
+
+    Unknown content types return ``False`` rather than raising, so caller-facing
+    validation can turn a bad ``content_type`` into a clean 400. ``object_id`` is
+    the local row id (our pk), never an external API id.
+    """
+    spec = _ALL_MODELS.get(content_type)
+    if spec is None:
+        return False
+    return apps.get_model(*spec).objects.filter(pk=object_id).exists()
 
 
 def content_type_of(obj):
@@ -82,6 +111,19 @@ def summarize(obj):
     relevant date for that type, or None) and a short ``subtitle``.
     """
     content_type = content_type_of(obj)
+
+    # Football teams are not SyncedContent: they use name/logo_url, not
+    # title/poster_url, so they are shaped into the common summary separately.
+    if content_type == "football":
+        return {
+            "content_type": "football",
+            "id": obj.id,
+            "title": obj.name,
+            "poster_url": obj.logo_url,
+            "date": None,
+            "subtitle": obj.competition or "Team",
+        }
+
     summary = {
         "content_type": content_type,
         "id": obj.id,
