@@ -8,6 +8,7 @@ import { ToastProvider } from '@/components/toast'
 import { AppLayout } from '@/layout/AppLayout'
 import { AnimePage } from '@/pages/AnimePage'
 import { ComingSoon } from '@/pages/ComingSoon'
+import { DetailPage } from '@/pages/DetailPage'
 import { FootballPage } from '@/pages/FootballPage'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
 import { GamesPage } from '@/pages/GamesPage'
@@ -19,6 +20,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage'
 import { OnboardingPage } from '@/pages/OnboardingPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
+import { TeamDetailPage } from '@/pages/TeamDetailPage'
 import { VerifyEmailPage } from '@/pages/VerifyEmailPage'
 import { ThemeProvider } from '@/lib/theme'
 
@@ -51,27 +53,27 @@ function App() {
                   <Route path="movies" element={<MoviesPage />} />
                   <Route
                     path="movies/:id"
-                    element={<ComingSoon title="Movie details" />}
+                    element={<DetailPage contentType="movie" />}
                   />
                   <Route path="tv" element={<TVPage />} />
                   <Route
                     path="tv/:id"
-                    element={<ComingSoon title="Show details" />}
+                    element={<DetailPage contentType="tv" />}
                   />
                   <Route path="anime" element={<AnimePage />} />
                   <Route
                     path="anime/:id"
-                    element={<ComingSoon title="Anime details" />}
+                    element={<DetailPage contentType="anime" />}
                   />
                   <Route path="games" element={<GamesPage />} />
                   <Route
                     path="games/:id"
-                    element={<ComingSoon title="Game details" />}
+                    element={<DetailPage contentType="game" />}
                   />
                   <Route path="football" element={<FootballPage />} />
                   <Route
                     path="football/teams/:id"
-                    element={<ComingSoon title="Team details" />}
+                    element={<TeamDetailPage />}
                   />
 
                   <Route

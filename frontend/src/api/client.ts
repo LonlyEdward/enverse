@@ -127,3 +127,27 @@ export async function rawGet<T>(path: string): Promise<T> {
   }
   return (await res.json()) as T
 }
+
+/**
+ * Raw POST/DELETE/PATCH for the library endpoints, where the kind is part of
+ * the path so the typed client's literal paths would need a lot of boilerplate.
+ * Still goes through authFetch. Returns parsed JSON, or null for 204.
+ */
+export async function rawSend<T>(
+  method: string,
+  path: string,
+  body?: unknown,
+): Promise<T | null> {
+  const init: RequestInit = { method }
+  if (body !== undefined) {
+    init.headers = { 'Content-Type': 'application/json' }
+    init.body = JSON.stringify(body)
+  }
+  const res = await authFetch(new Request(`${API_ORIGIN}${path}`, init))
+  if (!res.ok) {
+    const b = await res.json().catch(() => null)
+    throw toApiError(b, res.status)
+  }
+  if (res.status === 204) return null
+  return (await res.json().catch(() => null)) as T
+}
