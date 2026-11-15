@@ -23,6 +23,8 @@ api_v1_patterns = [
     path("", include("library.urls")),
     path("", include("content.urls")),
     path("", include("notifications.urls")),
+    path("", include("recommendations.urls")),
+    path("", include("agenda.urls")),
 ]
 
 urlpatterns = [

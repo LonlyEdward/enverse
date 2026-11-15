@@ -2,7 +2,7 @@
 
 from django.core.cache import cache
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -10,6 +10,7 @@ from core.registry import CONTENT_TYPES
 from sports.serializers import FootballFixtureSerializer
 
 from . import services
+from .dashboard import build_dashboard
 
 GENRES_CACHE_SECONDS = 600  # 10 minutes; genres change only when a sync adds one
 
@@ -71,3 +72,12 @@ class GenresView(APIView):
             genres = services.distinct_genres(content_type)
             cache.set(cache_key, genres, GENRES_CACHE_SECONDS)
         return genres
+
+
+class DashboardView(APIView):
+    """``GET dashboard/`` — one personalised payload of every home section."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(build_dashboard(request.user))
