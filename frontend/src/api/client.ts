@@ -1,5 +1,6 @@
 import createClient from 'openapi-fetch'
 
+import { toApiError } from './errors'
 import type { paths } from './schema'
 import {
   clearTokens,
@@ -110,3 +111,19 @@ export const api = createClient<paths>({
   baseUrl: API_ORIGIN,
   fetch: authFetch,
 })
+
+/**
+ * Raw GET for the few endpoints whose query params the schema does not document
+ * (the view reads them by hand), so the typed client cannot express them —
+ * `meta/genres/?type=` and `search/?q=&type=`. Still goes through authFetch, so
+ * auth and refresh apply when relevant. `path` must already be a full
+ * `/api/v1/...?query` string with its values encoded.
+ */
+export async function rawGet<T>(path: string): Promise<T> {
+  const res = await authFetch(new Request(`${API_ORIGIN}${path}`))
+  if (!res.ok) {
+    const body = await res.json().catch(() => null)
+    throw toApiError(body, res.status)
+  }
+  return (await res.json()) as T
+}

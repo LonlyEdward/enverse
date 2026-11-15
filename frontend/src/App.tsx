@@ -11,6 +11,7 @@ import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
 import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { OnboardingPage } from '@/pages/OnboardingPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
 import { VerifyEmailPage } from '@/pages/VerifyEmailPage'
@@ -74,6 +75,14 @@ function App() {
                     element={<ComingSoon title="Team details" />}
                   />
 
+                  <Route
+                    path="onboarding"
+                    element={
+                      <RequireAuth>
+                        <OnboardingPage />
+                      </RequireAuth>
+                    }
+                  />
                   <Route
                     path="dashboard"
                     element={

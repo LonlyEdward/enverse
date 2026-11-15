@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { ApiError } from '@/api/errors'
+import { getGenrePreferences } from '@/api/preferences'
 import { useAuth } from '@/auth/AuthContext'
 import { AuthCard, FormError } from '@/components/AuthCard'
 import { Button } from '@/components/Button'
@@ -11,6 +12,24 @@ import { useToast } from '@/components/toast'
 
 interface LocationState {
   next?: string
+}
+
+/** Send brand-new users to onboarding, but only when they log into the default
+ *  landing (not a specific guarded page) and have no genres saved yet. A local
+ *  flag avoids re-prompting someone who already skipped onboarding here. */
+async function destinationAfterLogin(next: string): Promise<string> {
+  if (next !== '/') return next
+  try {
+    if (localStorage.getItem('enverse-onboarded')) return next
+  } catch {
+    // ignore unavailable storage
+  }
+  try {
+    const prefs = await getGenrePreferences()
+    return prefs.length === 0 ? '/onboarding' : next
+  } catch {
+    return next
+  }
 }
 
 export function LoginPage() {
@@ -35,7 +54,7 @@ export function LoginPage() {
         title: `Welcome back${user.display_name ? `, ${user.display_name}` : ''}`,
         tone: 'success',
       })
-      navigate(next, { replace: true })
+      navigate(await destinationAfterLogin(next), { replace: true })
     } catch (err) {
       setError(
         err instanceof ApiError
