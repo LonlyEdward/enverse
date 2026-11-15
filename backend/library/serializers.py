@@ -7,13 +7,17 @@ view bulk-resolves those items with ``load_content`` and passes them in via the
 
 from rest_framework import serializers
 
-from core.registry import LIBRARY_CONTENT_TYPES, content_exists, summarize
+from core.choices import ContentType
+from core.registry import content_exists, summarize
 
 
 class LibraryWriteSerializer(serializers.Serializer):
     """Validates a POST body of ``{content_type, object_id}``."""
 
-    content_type = serializers.ChoiceField(choices=LIBRARY_CONTENT_TYPES)
+    # ContentType.choices is exactly the library's content types, and reusing it
+    # (rather than a bare value tuple) keeps the OpenAPI enum identical to the
+    # models' so the generated client has one ContentTypeEnum.
+    content_type = serializers.ChoiceField(choices=ContentType.choices)
     object_id = serializers.IntegerField(min_value=1)
 
     def validate(self, attrs):
@@ -44,7 +48,7 @@ class LibraryItemSerializer(serializers.Serializer):
     created_at = serializers.DateTimeField(read_only=True)
     item = serializers.SerializerMethodField()
 
-    def get_item(self, obj):
+    def get_item(self, obj) -> "dict | None":
         items = self.context.get("items", {})
         content = items.get((obj.content_type, obj.object_id))
         # The content row can be absent (e.g. deleted after being saved); the

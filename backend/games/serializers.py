@@ -32,10 +32,10 @@ class GameListSerializer(serializers.ModelSerializer):
             "status",
         ]
 
-    def get_content_type(self, obj):
+    def get_content_type(self, obj) -> str:
         return "game"
 
-    def get_status(self, obj):
+    def get_status(self, obj) -> str:
         from django.utils import timezone
 
         return game_status(obj.release_date, timezone.localdate())

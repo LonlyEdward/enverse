@@ -60,3 +60,35 @@ down -v` also deletes the Postgres volume — only use `-v` when you mean it.
 All configuration comes from environment variables; see `.env.example` for the
 full list with comments. `DEBUG` defaults to **False** and production refuses to
 start without a `SECRET_KEY`.
+
+## API documentation
+
+The API is self-describing through an OpenAPI 3 schema (drf-spectacular):
+
+- **Schema (YAML):** <http://localhost:8000/api/schema/>
+- **Swagger UI:** <http://localhost:8000/api/docs/>
+- **ReDoc:** <http://localhost:8000/api/redoc/>
+
+This schema is the contract the frontend generates its TypeScript types from. A
+hand-maintained endpoint summary also lives in `enverse-handoff/docs/API.md`.
+
+## Demo data (no API keys needed)
+
+External content syncs need API keys, but you can fill the database with realistic
+fake content to develop the UI:
+
+```bash
+docker compose exec -u "$(id -u):$(id -g)" backend python manage.py seed_demo --count 200
+```
+
+It is deterministic and idempotent (re-running refreshes the same `demo-*` rows),
+makes no external calls, and assigns trending ranks so every list, trending,
+calendar and dashboard view has something to show.
+
+## Throttling
+
+Rate limits use DRF's `ScopedRateThrottle` backed by the Redis cache, so the
+counters are **global** across all Gunicorn workers (the 6th `auth/register/` call
+within an hour gets a 429 no matter which worker serves it). Note the trade-off:
+if Redis is unavailable, throttled endpoints fail closed (HTTP 500) rather than
+letting unlimited traffic through.

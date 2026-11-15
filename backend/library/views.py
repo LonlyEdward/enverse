@@ -5,6 +5,8 @@ resolved in one pass by ``load_content`` (one query per content type, not per
 row) and handed to the serializer through context.
 """
 
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
@@ -42,7 +44,15 @@ class LibraryListCreateView(generics.ListCreateAPIView):
     read_serializer_class = LibraryItemSerializer
     write_serializer_class = LibraryWriteSerializer
 
+    def get_serializer_class(self):
+        # Write on POST, read otherwise — also lets the schema describe both shapes.
+        if getattr(self.request, "method", None) == "POST":
+            return self.write_serializer_class
+        return self.read_serializer_class
+
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return self.model.objects.none()
         qs = self.model.objects.filter(user=self.request.user)
         content_type = self.request.query_params.get("content_type")
         if content_type:
@@ -77,9 +87,12 @@ class LibraryDestroyView(generics.DestroyAPIView):
 
     permission_classes = [IsVerifiedUser]
     throttle_scope = "library"
+    serializer_class = LibraryItemSerializer
     model = None
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return self.model.objects.none()
         return self.model.objects.filter(user=self.request.user)
 
 
@@ -138,6 +151,7 @@ class FollowingDetailView(generics.UpdateAPIView, generics.DestroyAPIView):
         return Response(FollowingSerializer(instance, context=context).data)
 
 
+@extend_schema(responses=OpenApiTypes.OBJECT)
 class LibraryStatusView(APIView):
     """One call returning the user's button states for a single item.
 

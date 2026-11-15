@@ -1,6 +1,8 @@
 """Public discovery endpoints: search, trending and genre metadata."""
 
 from django.core.cache import cache
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -15,6 +17,7 @@ from .dashboard import build_dashboard
 GENRES_CACHE_SECONDS = 600  # 10 minutes; genres change only when a sync adds one
 
 
+@extend_schema(responses=OpenApiTypes.OBJECT)
 class SearchView(APIView):
     """``GET search/?q=&type=`` — unified search over titles and team names.
 
@@ -38,6 +41,7 @@ class SearchView(APIView):
         return Response({"query": query, "results": services.search(query, type_filter)})
 
 
+@extend_schema(responses=OpenApiTypes.OBJECT)
 class TrendingView(APIView):
     """``GET trending/`` — top items per content type plus upcoming fixtures."""
 
@@ -49,6 +53,7 @@ class TrendingView(APIView):
         return Response(sections)
 
 
+@extend_schema(responses=OpenApiTypes.OBJECT)
 class GenresView(APIView):
     """``GET meta/genres/?type=`` — distinct genres per content type, cached 10 min.
 
@@ -74,6 +79,7 @@ class GenresView(APIView):
         return genres
 
 
+@extend_schema(responses=OpenApiTypes.OBJECT)
 class DashboardView(APIView):
     """``GET dashboard/`` — one personalised payload of every home section."""
 

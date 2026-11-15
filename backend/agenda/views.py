@@ -1,6 +1,8 @@
 """The calendar endpoint: a unified, dated feed across all content types."""
 
 from django.utils.dateparse import parse_date
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import NotAuthenticated
 from rest_framework.permissions import AllowAny
@@ -12,6 +14,7 @@ from . import services
 TRUTHY = {"1", "true", "yes"}
 
 
+@extend_schema(responses=OpenApiTypes.OBJECT)
 class CalendarView(APIView):
     """``GET calendar/?start=&end=&type=&mine=`` — dated events, span capped at 62 days.
 

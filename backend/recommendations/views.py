@@ -1,5 +1,7 @@
 """Read the user's recommendations (computed lazily the first time) and refresh them."""
 
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -21,6 +23,8 @@ class RecommendationListView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Recommendation.objects.none()
         qs = Recommendation.objects.filter(user=self.request.user)
         content_type = self.request.query_params.get("type")
         if content_type:
@@ -37,6 +41,7 @@ class RecommendationListView(generics.ListAPIView):
         return Response(data)
 
 
+@extend_schema(request=None, responses=OpenApiTypes.OBJECT)
 class RecommendationRefreshView(APIView):
     """``POST recommendations/refresh/`` — recompute now (tightly throttled)."""
 

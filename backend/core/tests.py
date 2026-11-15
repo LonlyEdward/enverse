@@ -174,3 +174,29 @@ class CeleryScheduleTests(SimpleTestCase):
         # beat schedule references must already be registered. (Empty until Phase 3.)
         for name, config in settings.CELERY_BEAT_SCHEDULE.items():
             self.assertIn(config["task"], celery_app.tasks, f"{name}: {config['task']} is not registered")
+
+
+class SeedDemoCommandTests(TestCase):
+    def test_creates_rows_and_is_idempotent(self):
+        from django.core.management import call_command
+
+        from anime.models import Anime
+        from sports.models import FootballFixture
+        from tv.models import TVShow
+
+        call_command("seed_demo", "--count", "5", verbosity=0)
+        self.assertEqual(Movie.objects.filter(external_id__startswith="demo-movie-").count(), 5)
+        self.assertEqual(TVShow.objects.filter(external_id__startswith="demo-tv-").count(), 5)
+        self.assertEqual(Anime.objects.filter(external_id__startswith="demo-anime-").count(), 5)
+        self.assertEqual(Game.objects.filter(external_id__startswith="demo-game-").count(), 5)
+        self.assertEqual(FootballFixture.objects.filter(external_id__startswith="demo-fixture-").count(), 5)
+        self.assertTrue(Movie.objects.filter(trending_rank__isnull=False).exists())
+
+        call_command("seed_demo", "--count", "5", verbosity=0)  # re-run must not duplicate
+        self.assertEqual(Movie.objects.filter(external_id__startswith="demo-movie-").count(), 5)
+
+
+class SchemaEndpointTests(TestCase):
+    def test_schema_and_docs_are_public(self):
+        self.assertEqual(self.client.get("/api/schema/").status_code, 200)
+        self.assertEqual(self.client.get("/api/docs/").status_code, 200)

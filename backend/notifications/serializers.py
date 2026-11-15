@@ -26,10 +26,10 @@ class NotificationSerializer(serializers.ModelSerializer):
             "item",
         ]
 
-    def get_is_read(self, obj):
+    def get_is_read(self, obj) -> bool:
         return obj.read_at is not None
 
-    def get_item(self, obj):
+    def get_item(self, obj) -> "dict | None":
         content = self.context.get("items", {}).get((obj.content_type, obj.object_id))
         return summarize(content) if content is not None else None
 

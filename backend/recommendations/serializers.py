@@ -14,6 +14,6 @@ class RecommendationSerializer(serializers.ModelSerializer):
         model = Recommendation
         fields = ["content_type", "object_id", "score", "reason", "item"]
 
-    def get_item(self, obj):
+    def get_item(self, obj) -> "dict | None":
         content = self.context.get("items", {}).get((obj.content_type, obj.object_id))
         return summarize(content) if content is not None else None

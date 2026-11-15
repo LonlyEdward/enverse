@@ -11,6 +11,8 @@ from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -35,6 +37,7 @@ def _tokens_for_user(user):
     return {"access": str(refresh.access_token), "refresh": str(refresh)}
 
 
+@extend_schema(request=RegisterSerializer, responses=UserSerializer)
 class RegisterView(APIView):
     permission_classes = [AllowAny]
     throttle_scope = "register"
@@ -47,6 +50,7 @@ class RegisterView(APIView):
         return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(request=LoginSerializer, responses=OpenApiTypes.OBJECT)
 class LoginView(APIView):
     permission_classes = [AllowAny]
     throttle_scope = "login"
@@ -59,6 +63,7 @@ class LoginView(APIView):
         return Response({**tokens, "user": UserSerializer(user).data})
 
 
+@extend_schema(request=LogoutSerializer, responses=OpenApiTypes.OBJECT)
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -73,6 +78,7 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_205_RESET_CONTENT)
 
 
+@extend_schema(request=VerifyEmailSerializer, responses=OpenApiTypes.OBJECT)
 class VerifyEmailView(APIView):
     permission_classes = [AllowAny]
 
@@ -83,6 +89,7 @@ class VerifyEmailView(APIView):
         return Response({"detail": "Email verified."})
 
 
+@extend_schema(request=None, responses=OpenApiTypes.OBJECT)
 class ResendVerificationView(APIView):
     permission_classes = [IsAuthenticated]
     throttle_scope = "resend_verification"
@@ -94,6 +101,7 @@ class ResendVerificationView(APIView):
         return Response({"detail": "If your email is unverified, a new link has been sent."})
 
 
+@extend_schema(request=PasswordResetRequestSerializer, responses=OpenApiTypes.OBJECT)
 class PasswordResetView(APIView):
     permission_classes = [AllowAny]
     throttle_scope = "password_reset"
@@ -110,6 +118,7 @@ class PasswordResetView(APIView):
         return Response({"detail": "If an account exists for this email, a reset link has been sent."})
 
 
+@extend_schema(request=PasswordResetConfirmSerializer, responses=OpenApiTypes.OBJECT)
 class PasswordResetConfirmView(APIView):
     permission_classes = [AllowAny]
 
@@ -129,6 +138,7 @@ class UserMeView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+@extend_schema(request=GenrePreferencesSerializer, responses=OpenApiTypes.OBJECT)
 class GenrePreferencesView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -146,6 +156,7 @@ class GenrePreferencesView(APIView):
         return self.get(request)
 
 
+@extend_schema(request=PlatformPreferencesSerializer, responses=OpenApiTypes.OBJECT)
 class PlatformPreferencesView(APIView):
     permission_classes = [IsAuthenticated]
 

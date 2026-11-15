@@ -2,6 +2,7 @@
 
 from django.db.models import Count, Q
 from django.utils import timezone
+from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -75,6 +76,7 @@ class TeamDetailView(generics.RetrieveAPIView):
         return context
 
 
+@extend_schema(responses=CompetitionSerializer(many=True))
 class CompetitionListView(APIView):
     """Distinct competitions we hold fixtures for, each with a fixture count."""
 

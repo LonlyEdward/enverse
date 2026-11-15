@@ -62,3 +62,8 @@ class TVSeason(models.Model):
 
     def __str__(self):
         return f"{self.show.title} - Season {self.season_number}"
+
+
+# Module-level alias so SPECTACULAR_SETTINGS["ENUM_NAME_OVERRIDES"] can name this
+# enum (import_string cannot reach a nested TextChoices class).
+TVSHOW_STATUS_CHOICES = TVShow.Status.choices

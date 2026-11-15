@@ -25,10 +25,10 @@ class MovieListSerializer(serializers.ModelSerializer):
             "status",
         ]
 
-    def get_content_type(self, obj):
+    def get_content_type(self, obj) -> str:
         return "movie"
 
-    def get_status(self, obj):
+    def get_status(self, obj) -> str:
         return movie_status(obj.release_date)
 
 
@@ -46,5 +46,5 @@ class MovieDetailSerializer(MovieListSerializer):
             "similar",
         ]
 
-    def get_similar(self, obj):
+    def get_similar(self, obj) -> list:
         return MovieListSerializer(similar_movies(obj), many=True, context=self.context).data

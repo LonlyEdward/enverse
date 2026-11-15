@@ -7,7 +7,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import AllowAny
 
 from .filters import TVFilterSet
-from .models import TVShow
+from .models import TVSeason, TVShow
 from .serializers import TVSeasonSerializer, TVShowDetailSerializer, TVShowListSerializer
 
 
@@ -42,6 +42,8 @@ class TVSeasonsView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return TVSeason.objects.none()
         # 404 when the show itself does not exist (not just an empty list).
         show = get_object_or_404(TVShow, pk=self.kwargs["pk"])
         return show.seasons.all()

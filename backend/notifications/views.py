@@ -6,6 +6,8 @@ delete another user's notifications — a foreign id is simply a 404.
 """
 
 from django.utils import timezone
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -27,6 +29,8 @@ class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Notification.objects.none()
         qs = Notification.objects.filter(user=self.request.user, channel=Notification.Channel.IN_APP)
         if (self.request.query_params.get("unread") or "").lower() in TRUTHY:
             qs = qs.filter(read_at__isnull=True)
@@ -47,6 +51,7 @@ class NotificationListView(generics.ListAPIView):
         return Response(data)
 
 
+@extend_schema(responses=OpenApiTypes.OBJECT)
 class UnreadCountView(APIView):
     permission_classes = [IsAuthenticated]
     throttle_scope = "notifications"
@@ -58,6 +63,7 @@ class UnreadCountView(APIView):
         return Response({"count": count})
 
 
+@extend_schema(request=None, responses=OpenApiTypes.OBJECT)
 class MarkReadView(APIView):
     permission_classes = [IsAuthenticated]
     throttle_scope = "notifications"
@@ -72,6 +78,7 @@ class MarkReadView(APIView):
         return Response({"id": notification.id, "read_at": notification.read_at})
 
 
+@extend_schema(request=None, responses=OpenApiTypes.OBJECT)
 class ReadAllView(APIView):
     permission_classes = [IsAuthenticated]
     throttle_scope = "notifications"
@@ -84,8 +91,11 @@ class ReadAllView(APIView):
 class NotificationDestroyView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     throttle_scope = "notifications"
+    serializer_class = NotificationSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Notification.objects.none()
         return _own_in_app(self.request.user)
 
 

@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "django_filters",
+    "drf_spectacular",
     # Local
     "accounts",
     "content",
@@ -265,6 +266,7 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.ScopedRateThrottle",
     ],
@@ -292,6 +294,24 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
+}
+
+# --- OpenAPI (drf-spectacular) ----------------------------------------------
+# The generated schema at /api/schema/ is the contract the frontend generates its
+# types from (Phase 13). Keep it warning-clean.
+SPECTACULAR_SETTINGS = {
+    "TITLE": "EnVerse API",
+    "DESCRIPTION": "Personalized entertainment and sports discovery platform.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,  # don't expose the raw schema on the Swagger view
+    "SCHEMA_PATH_PREFIX": r"/api/v1",
+    # The shared content-type choice set appears on many components; name it once
+    # so the generated client gets one stable `ContentTypeEnum` type.
+    "ENUM_NAME_OVERRIDES": {
+        "ContentTypeEnum": "core.choices.ContentType",
+        "TVShowStatusEnum": "tv.models.TVSHOW_STATUS_CHOICES",
+        "FootballFixtureStatusEnum": "sports.models.FOOTBALL_FIXTURE_STATUS_CHOICES",
+    },
 }
 
 

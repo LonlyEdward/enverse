@@ -20,7 +20,7 @@ class FootballTeamSerializer(serializers.ModelSerializer):
         model = FootballTeam
         fields = ["id", "content_type", "external_id", "name", "logo_url", "competition"]
 
-    def get_content_type(self, obj):
+    def get_content_type(self, obj) -> str:
         return "football_team"
 
 
@@ -47,7 +47,7 @@ class FootballFixtureSerializer(serializers.ModelSerializer):
             "away_score",
         ]
 
-    def get_content_type(self, obj):
+    def get_content_type(self, obj) -> str:
         return "football_fixture"
 
 
@@ -64,10 +64,10 @@ class FootballTeamDetailSerializer(FootballTeamSerializer):
     class Meta(FootballTeamSerializer.Meta):
         fields = FootballTeamSerializer.Meta.fields + ["next_fixtures", "recent_results"]
 
-    def get_next_fixtures(self, obj):
+    def get_next_fixtures(self, obj) -> list:
         return FootballFixtureSerializer(self.context.get("next_fixtures", []), many=True).data
 
-    def get_recent_results(self, obj):
+    def get_recent_results(self, obj) -> list:
         return FootballFixtureSerializer(self.context.get("recent_results", []), many=True).data
 
 

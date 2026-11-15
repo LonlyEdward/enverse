@@ -8,7 +8,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import AllowAny
 
 from .filters import AnimeFilterSet
-from .models import Anime
+from .models import Anime, AnimeEpisode
 from .serializers import AnimeDetailSerializer, AnimeEpisodeSerializer, AnimeListSerializer
 
 
@@ -54,5 +54,7 @@ class AnimeEpisodesView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return AnimeEpisode.objects.none()
         anime = get_object_or_404(Anime, pk=self.kwargs["pk"])
         return anime.episodes.all()

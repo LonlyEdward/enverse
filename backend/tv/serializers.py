@@ -30,7 +30,7 @@ class TVShowListSerializer(serializers.ModelSerializer):
             "trending_rank",
         ]
 
-    def get_content_type(self, obj):
+    def get_content_type(self, obj) -> str:
         return "tv"
 
 

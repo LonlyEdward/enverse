@@ -47,3 +47,8 @@ class FootballFixture(TimeStampedModel):
 
     def __str__(self):
         return f"{self.home_team} vs {self.away_team} ({self.kickoff_at:%Y-%m-%d})"
+
+
+# Module-level alias so SPECTACULAR_SETTINGS["ENUM_NAME_OVERRIDES"] can name this
+# enum (import_string cannot reach a nested TextChoices class).
+FOOTBALL_FIXTURE_STATUS_CHOICES = FootballFixture.Status.choices
