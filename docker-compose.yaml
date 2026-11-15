@@ -39,6 +39,25 @@ services:
     # Keep the scheduler's state file out of the bind-mounted source tree.
     command: celery -A config beat -l info --schedule /tmp/celerybeat-schedule
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    environment:
+      # The browser calls the API directly, so this points at the host, not the
+      # Docker-internal backend hostname.
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/api/v1}
+    volumes:
+      - ./frontend:/app
+      # Anonymous volume keeps the image's installed node_modules from being
+      # hidden by the bind mount above.
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
   db:
     image: postgres:16
     volumes:

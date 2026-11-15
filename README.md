@@ -55,6 +55,33 @@ docker compose logs -f backend
 `docker compose down` stops the stack but keeps the database. `docker compose
 down -v` also deletes the Postgres volume — only use `-v` when you mean it.
 
+## Frontend (web app)
+
+The React app lives in `frontend/` (React 19 + Vite + TypeScript, Tailwind,
+React Router, TanStack Query). `docker compose up` already starts it at
+<http://localhost:5173/> with hot reload. To run it on its own instead:
+
+```bash
+cd frontend
+cp .env.example .env     # VITE_API_URL=http://localhost:8000/api/v1
+npm install
+npm run dev              # http://localhost:5173
+```
+
+The app talks to the API over `VITE_API_URL` and generates its TypeScript types
+from the backend's OpenAPI schema:
+
+```bash
+npm run gen:api          # regenerate src/api/schema.ts from /api/schema/
+npm run typecheck        # tsc strict
+npm run lint             # oxlint
+npm run build            # production build
+```
+
+Seed demo content first (see "Demo data" below) so the lists have something to
+show. Design tokens and frontend conventions are documented in
+`enverse-handoff/docs/DESIGN.md`.
+
 ## Configuration
 
 All configuration comes from environment variables; see `.env.example` for the

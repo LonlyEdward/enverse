@@ -1,0 +1,187 @@
+@import 'tailwindcss';
+
+/* Dark/light is driven by the `data-theme` attribute on <html> (set before
+   first paint by the inline script in index.html and toggled by ThemeToggle),
+   not the OS media query alone, so the user's explicit choice always wins. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens — EnVerse
+   Direction: poster-forward, cinematic, dark by default. Surfaces are a deep
+   cool black (not pure OLED) so posters supply the colour. One accent hue per
+   content type is the signature system, reused on badges, tabs and calendar
+   dots. The rose brand accent is reserved for primary actions only.
+--------------------------------------------------------------------------- */
+:root,
+:root[data-theme='dark'] {
+  --bg: #0a0a0f;
+  --surface: #121219;
+  --surface-2: #1b1b25;
+  --surface-3: #242431;
+  --border: #262633;
+  --border-strong: #3a3a4a;
+
+  --fg: #f4f4f7;
+  --fg-muted: #9a9aa8;
+  --fg-subtle: #6b6b78;
+
+  --brand: #f43f5e;
+  --brand-hover: #fb5a74;
+  --on-brand: #ffffff;
+
+  --danger: #f87171;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --info: #60a5fa;
+
+  --ring: #fb5a74;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-pop: 0 12px 32px -8px rgb(0 0 0 / 0.6);
+  --poster-shadow: 0 8px 24px -6px rgb(0 0 0 / 0.7);
+}
+
+:root[data-theme='light'] {
+  --bg: #fafafb;
+  --surface: #ffffff;
+  --surface-2: #f3f3f6;
+  --surface-3: #e9e9ef;
+  --border: #e4e4ea;
+  --border-strong: #d2d2dc;
+
+  --fg: #15151c;
+  --fg-muted: #5a5a66;
+  --fg-subtle: #8a8a96;
+
+  --brand: #e11d48;
+  --brand-hover: #be123c;
+  --on-brand: #ffffff;
+
+  --danger: #dc2626;
+  --success: #059669;
+  --warning: #d97706;
+  --info: #2563eb;
+
+  --ring: #e11d48;
+
+  --shadow-card: 0 1px 2px rgb(15 15 25 / 0.08);
+  --shadow-pop: 0 12px 32px -8px rgb(15 15 25 / 0.18);
+  --poster-shadow: 0 8px 24px -6px rgb(15 15 25 / 0.22);
+}
+
+/* Content-type accents are intentionally stable across themes: the colour
+   *means* "this is an anime / a game / a fixture", so it must not shift. */
+:root {
+  --c-movie: #f5b14c;
+  --c-tv: #38bdf8;
+  --c-anime: #f472b6;
+  --c-game: #a78bfa;
+  --c-football: #34d399;
+}
+
+/* Expose tokens to Tailwind as utilities (bg-bg, text-fg, border-border,
+   text-brand, bg-anime, ...). `inline` makes the utilities reference the live
+   CSS variable, so flipping data-theme re-themes everything instantly. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-on-brand: var(--on-brand);
+
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+
+  --color-movie: var(--c-movie);
+  --color-tv: var(--c-tv);
+  --color-anime: var(--c-anime);
+  --color-game: var(--c-game);
+  --color-football: var(--c-football);
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* One visible, consistent focus ring for keyboard users everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--brand) 35%, transparent);
+    color: var(--fg);
+  }
+
+  ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-3);
+    border: 3px solid var(--bg);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-strong);
+  }
+}
+
+/* Respect the user's reduced-motion preference globally. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
