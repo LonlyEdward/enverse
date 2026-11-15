@@ -24,6 +24,33 @@ export async function register(input: {
   unwrap(await api.POST('/api/v1/auth/register/', { body: input }))
 }
 
+/** Confirm an email address from the token in the verification link. */
+export async function verifyEmail(token: string): Promise<void> {
+  unwrap(await api.POST('/api/v1/auth/verify-email/', { body: { token } }))
+}
+
+/** Ask for a fresh verification email (requires being logged in). */
+export async function resendVerification(): Promise<void> {
+  unwrap(await api.POST('/api/v1/auth/resend-verification/'))
+}
+
+/** Start a password reset. Always succeeds server-side (no account
+ *  enumeration), so the UI shows the same message either way. */
+export async function requestPasswordReset(email: string): Promise<void> {
+  unwrap(await api.POST('/api/v1/auth/password-reset/', { body: { email } }))
+}
+
+/** Finish a password reset from the link's uid+token. Does not log in. */
+export async function confirmPasswordReset(input: {
+  uid: string
+  token: string
+  new_password: string
+}): Promise<void> {
+  unwrap(
+    await api.POST('/api/v1/auth/password-reset/confirm/', { body: input }),
+  )
+}
+
 /** Fetch the current user from a valid access token. */
 export async function fetchMe(): Promise<User> {
   return unwrap(await api.GET('/api/v1/users/me/'))

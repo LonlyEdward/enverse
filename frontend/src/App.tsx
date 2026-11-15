@@ -7,9 +7,13 @@ import { RequireAuth, RequireVerified } from '@/auth/guards'
 import { ToastProvider } from '@/components/toast'
 import { AppLayout } from '@/layout/AppLayout'
 import { ComingSoon } from '@/pages/ComingSoon'
+import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
 import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { RegisterPage } from '@/pages/RegisterPage'
+import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
+import { VerifyEmailPage } from '@/pages/VerifyEmailPage'
 import { ThemeProvider } from '@/lib/theme'
 
 function App() {
@@ -23,6 +27,16 @@ function App() {
                 <Route element={<AppLayout />}>
                   <Route index element={<HomePage />} />
                   <Route path="login" element={<LoginPage />} />
+                  <Route path="register" element={<RegisterPage />} />
+                  <Route path="verify-email" element={<VerifyEmailPage />} />
+                  <Route
+                    path="forgot-password"
+                    element={<ForgotPasswordPage />}
+                  />
+                  <Route
+                    path="reset-password"
+                    element={<ResetPasswordPage />}
+                  />
                   <Route
                     path="search"
                     element={<ComingSoon title="Search" />}

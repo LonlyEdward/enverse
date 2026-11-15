@@ -4,17 +4,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { ApiError } from '@/api/errors'
 import { useAuth } from '@/auth/AuthContext'
+import { AuthCard, FormError } from '@/components/AuthCard'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
-import { Logo } from '@/components/Logo'
 import { useToast } from '@/components/toast'
 
 interface LocationState {
   next?: string
 }
 
-/** Minimal login form. The full auth suite (register, verification, password
- *  reset, onboarding) is built in Phase 14; this proves the token plumbing. */
 export function LoginPage() {
   const { login } = useAuth()
   const { toast } = useToast()
@@ -24,7 +22,7 @@ export function LoginPage() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<ApiError | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
   async function handleSubmit(event: FormEvent) {
@@ -41,33 +39,36 @@ export function LoginPage() {
     } catch (err) {
       setError(
         err instanceof ApiError
-          ? err.message
-          : 'Could not log in. Please try again.',
+          ? err
+          : new ApiError('Could not log in. Please try again.', 0),
       )
     } finally {
       setSubmitting(false)
     }
   }
 
-  return (
-    <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center">
-      <div className="mb-8 flex flex-col items-center gap-3 text-center">
-        <Logo />
-        <h1 className="text-2xl font-semibold text-fg">Welcome back</h1>
-        <p className="text-sm text-fg-muted">
-          Log in to pick up where you left off.
-        </p>
-      </div>
+  // A plain 401 ("No active account…") has no field errors, so show it on top.
+  const topError =
+    error && Object.keys(error.fieldErrors).length === 0 ? error.message : null
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-        {error && (
-          <p
-            role="alert"
-            className="rounded-lg border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger"
+  return (
+    <AuthCard
+      title="Welcome back"
+      subtitle="Log in to pick up where you left off."
+      footer={
+        <>
+          New to EnVerse?{' '}
+          <Link
+            to="/register"
+            className="font-medium text-brand hover:underline"
           >
-            {error}
-          </p>
-        )}
+            Create an account
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+        {topError && <FormError message={topError} />}
         <Input
           label="Email"
           type="email"
@@ -76,27 +77,30 @@ export function LoginPage() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          error={error?.fieldErrors.email?.[0]}
         />
-        <Input
-          label="Password"
-          type="password"
-          name="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="flex flex-col gap-1.5">
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={error?.fieldErrors.password?.[0]}
+          />
+          <Link
+            to="/forgot-password"
+            className="self-end text-xs font-medium text-fg-muted hover:text-brand"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <Button type="submit" size="lg" loading={submitting} className="mt-1">
           Log in
         </Button>
       </form>
-
-      <p className="mt-6 text-center text-sm text-fg-muted">
-        New here?{' '}
-        <Link to="/" className="font-medium text-brand hover:underline">
-          Account sign-up arrives in the next phase.
-        </Link>
-      </p>
-    </div>
+    </AuthCard>
   )
 }
