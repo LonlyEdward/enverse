@@ -13,10 +13,20 @@ import { TopBar } from './TopBar'
 export function AppLayout() {
   return (
     <div className="flex min-h-svh flex-col">
+      {/* Keyboard users can jump straight past the nav to the page content. */}
+      <a
+        href="#main-content"
+        className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-50 focus-visible:rounded-lg focus-visible:bg-surface focus-visible:px-4 focus-visible:py-2 focus-visible:text-sm focus-visible:font-medium focus-visible:text-fg focus-visible:shadow-[var(--shadow-pop)] focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+      >
+        Skip to content
+      </a>
       <TopBar />
       <OfflineBanner />
       <VerifyEmailBanner />
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-24 pt-6 md:pb-10">
+      <main
+        id="main-content"
+        className="mx-auto w-full max-w-7xl flex-1 px-4 pb-24 pt-6 md:pb-10"
+      >
         <ErrorBoundary>
           {/* Routes are lazy chunks; the shell stays while one loads. */}
           <Suspense

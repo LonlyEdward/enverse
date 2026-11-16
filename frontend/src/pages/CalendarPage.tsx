@@ -77,7 +77,7 @@ function MonthView({
                 aria-pressed={isSelected}
                 aria-label={`${dayLabel(day)}, ${events.length} events`}
                 className={cn(
-                  'flex min-h-14 flex-col items-center gap-1 border-b border-r border-border p-1 transition-colors sm:min-h-20 sm:items-start',
+                  'flex min-h-14 min-w-0 flex-col items-center gap-1 overflow-hidden border-b border-r border-border p-1 transition-colors sm:min-h-20 sm:items-start',
                   inMonth ? 'bg-surface' : 'bg-bg',
                   isSelected && 'ring-2 ring-inset ring-[var(--ring)]',
                   'hover:bg-surface-2 focus-visible:outline-none focus-visible:bg-surface-2',
@@ -93,7 +93,7 @@ function MonthView({
                   {day.getDate()}
                 </span>
                 {events.length > 0 && (
-                  <span className="flex flex-wrap items-center gap-0.5">
+                  <span className="flex max-w-full flex-wrap items-center justify-center gap-0.5 sm:justify-start">
                     {events.slice(0, 4).map((event, i) => (
                       <span
                         key={i}
@@ -238,7 +238,7 @@ export function CalendarPage() {
         </div>
       </div>
 
-      <div className="mb-3 flex items-center justify-between gap-3">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-1">
           <button
             type="button"
@@ -248,7 +248,7 @@ export function CalendarPage() {
           >
             <ChevronLeft size={18} aria-hidden="true" />
           </button>
-          <span className="min-w-40 text-center text-base font-semibold text-fg">
+          <span className="min-w-32 text-center text-base font-semibold text-fg sm:min-w-40">
             {monthLabel(month)}
           </span>
           <button
