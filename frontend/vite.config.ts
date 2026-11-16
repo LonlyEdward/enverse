@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { fileURLToPath, URL } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
@@ -18,5 +19,16 @@ export default defineConfig({
     host: true,
     port: 5173,
     strictPort: true,
+  },
+  test: {
+    // Unit and component tests run in a jsdom DOM with global test APIs; the
+    // setup file registers the jest-dom matchers and cleans up after each test.
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/test/setup.ts'],
+    css: false,
+    include: ['src/**/*.test.{ts,tsx}'],
+    // Pin the time zone so date/time assertions are deterministic everywhere.
+    env: { TZ: 'UTC' },
   },
 })
