@@ -17,6 +17,7 @@ import { MoviesPage } from '@/pages/MoviesPage'
 import { TVPage } from '@/pages/TVPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { NotificationsPage } from '@/pages/NotificationsPage'
 import { OnboardingPage } from '@/pages/OnboardingPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
@@ -87,6 +88,14 @@ function App() {
                     element={
                       <RequireAuth>
                         <ComingSoon title="Your dashboard" />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="notifications"
+                    element={
+                      <RequireAuth>
+                        <NotificationsPage />
                       </RequireAuth>
                     }
                   />

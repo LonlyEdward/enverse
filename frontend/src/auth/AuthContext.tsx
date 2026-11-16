@@ -14,6 +14,7 @@ import {
   logout as logoutRequest,
 } from '@/api/auth'
 import { onAuthLost } from '@/api/client'
+import { queryClient } from '@/api/queryClient'
 import { hasRefreshToken } from '@/api/tokens'
 import type { User } from '@/api/types'
 
@@ -69,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(
     () =>
       onAuthLost(() => {
+        queryClient.clear()
         setUser(null)
         setStatus('anonymous')
       }),
@@ -77,6 +79,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const result = await loginRequest(email, password)
+    // Drop any cached data from a previous session so one user never sees
+    // another's library, notifications or recommendations.
+    queryClient.clear()
     setUser(result.user)
     setStatus('authenticated')
     return result.user
@@ -84,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     await logoutRequest()
+    queryClient.clear()
     setUser(null)
     setStatus('anonymous')
   }, [])

@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/auth/AuthContext'
 import { Button } from '@/components/Button'
 import { Logo } from '@/components/Logo'
+import { NotificationBell } from '@/components/NotificationBell'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { useToast } from '@/components/toast'
 import { cn } from '@/lib/cn'
@@ -52,6 +53,7 @@ export function TopBar() {
             <Search size={18} aria-hidden="true" />
           </NavLink>
           <ThemeToggle />
+          {status === 'authenticated' && <NotificationBell />}
 
           {status === 'authenticated' ? (
             <div className="hidden items-center gap-1 sm:flex">
