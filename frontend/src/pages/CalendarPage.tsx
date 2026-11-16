@@ -1,24 +1,22 @@
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import { useCalendar } from '@/api/hooks/calendar'
 import type { CalendarEvent } from '@/api/calendar'
 import { Button } from '@/components/Button'
 import { EmptyState } from '@/components/EmptyState'
 import { ErrorState } from '@/components/ErrorState'
+import { EventRow } from '@/components/EventRow'
 import { FilterBar } from '@/components/FilterBar'
 import type { FilterOption } from '@/components/FilterBar'
 import { Skeleton } from '@/components/Skeleton'
 import { cn } from '@/lib/cn'
 import { contentMeta } from '@/lib/contentTypes'
-import { eventPath } from '@/lib/routes'
 import {
   addMonths,
   dayLabel,
   endOfMonth,
   eventDayKey,
-  eventTime,
   monthGrid,
   monthLabel,
   startOfMonth,
@@ -34,44 +32,6 @@ const TYPE_OPTIONS: FilterOption[] = [
   { value: 'game', label: 'Games' },
   { value: 'football', label: 'Football' },
 ]
-
-const KIND_LABEL: Record<string, string> = {
-  release: 'Release',
-  episode: 'Episode',
-  match: 'Match',
-}
-
-function EventRow({ event }: { event: CalendarEvent }) {
-  const navigate = useNavigate()
-  const meta = contentMeta(event.content_type)
-  const time = eventTime(event)
-  const to = eventPath(event.content_type, event.id)
-
-  return (
-    <button
-      type="button"
-      onClick={() => to !== '/' && navigate(to)}
-      className="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none"
-    >
-      <span
-        className="h-8 w-1.5 shrink-0 rounded-full"
-        style={{ backgroundColor: meta?.color ?? 'var(--brand)' }}
-        aria-hidden="true"
-      />
-      <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-medium text-fg">
-          {event.title}
-        </span>
-        <span className="text-xs text-fg-subtle">
-          {meta?.label ?? event.content_type}
-          {' · '}
-          {KIND_LABEL[event.kind] ?? event.kind}
-          {time ? ` · ${time}` : ''}
-        </span>
-      </span>
-    </button>
-  )
-}
 
 function MonthView({
   month,

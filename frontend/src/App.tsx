@@ -8,7 +8,7 @@ import { ToastProvider } from '@/components/toast'
 import { AppLayout } from '@/layout/AppLayout'
 import { AnimePage } from '@/pages/AnimePage'
 import { CalendarPage } from '@/pages/CalendarPage'
-import { ComingSoon } from '@/pages/ComingSoon'
+import { DashboardPage } from '@/pages/DashboardPage'
 import { DetailPage } from '@/pages/DetailPage'
 import { FootballPage } from '@/pages/FootballPage'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
@@ -90,7 +90,7 @@ function App() {
                     path="dashboard"
                     element={
                       <RequireAuth>
-                        <ComingSoon title="Your dashboard" />
+                        <DashboardPage />
                       </RequireAuth>
                     }
                   />

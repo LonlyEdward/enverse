@@ -15,10 +15,20 @@ export function parseLocalDate(value: string): Date {
   return new Date(y ?? 1970, (m ?? 1) - 1, d ?? 1)
 }
 
+/** The raw moment string for an event. Usually `datetime`, but some payloads
+ *  (the dashboard's library updates) carry a full ISO datetime in `date`, so a
+ *  `date` containing a time counts too. Returns null for a plain calendar day. */
+function timedValue(event: CalendarEvent): string | null {
+  if (event.datetime) return event.datetime
+  if (event.date && event.date.includes('T')) return event.date
+  return null
+}
+
 /** The local calendar day an event falls on: a timed event is converted from
  *  UTC to the browser's zone; a date-only event is taken as-is. */
 export function eventLocalDate(event: CalendarEvent): Date {
-  if (event.datetime) return new Date(event.datetime)
+  const timed = timedValue(event)
+  if (timed) return new Date(timed)
   if (event.date) return parseLocalDate(event.date)
   return new Date(NaN)
 }
@@ -30,8 +40,9 @@ export function eventDayKey(event: CalendarEvent): string {
 
 /** Local HH:MM for a timed event, or '' for a date-only one. */
 export function eventTime(event: CalendarEvent): string {
-  if (!event.datetime) return ''
-  return new Date(event.datetime).toLocaleTimeString(undefined, {
+  const timed = timedValue(event)
+  if (!timed) return ''
+  return new Date(timed).toLocaleTimeString(undefined, {
     hour: '2-digit',
     minute: '2-digit',
   })
