@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import type { NotificationItem, NotificationKind } from '@/api/notifications'
 import { cn } from '@/lib/cn'
 import { contentMeta } from '@/lib/contentTypes'
-import { detailPath } from '@/lib/routes'
+import { eventPath } from '@/lib/routes'
 import { timeAgo } from '@/lib/time'
 
 const KIND_ICON: Record<NotificationKind, LucideIcon> = {
@@ -38,7 +38,7 @@ export function NotificationRow({
 
   function open() {
     onOpen?.(notification)
-    const to = detailPath(notification.content_type, notification.object_id)
+    const to = eventPath(notification.content_type, notification.object_id)
     if (to !== '/') navigate(to)
   }
 

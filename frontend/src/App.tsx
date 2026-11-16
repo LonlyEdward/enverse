@@ -7,6 +7,7 @@ import { RequireAuth, RequireVerified } from '@/auth/guards'
 import { ToastProvider } from '@/components/toast'
 import { AppLayout } from '@/layout/AppLayout'
 import { AnimePage } from '@/pages/AnimePage'
+import { CalendarPage } from '@/pages/CalendarPage'
 import { ComingSoon } from '@/pages/ComingSoon'
 import { DetailPage } from '@/pages/DetailPage'
 import { FootballPage } from '@/pages/FootballPage'
@@ -107,6 +108,14 @@ function App() {
                       <RequireVerified>
                         <RecommendationsPage />
                       </RequireVerified>
+                    }
+                  />
+                  <Route
+                    path="calendar"
+                    element={
+                      <RequireAuth>
+                        <CalendarPage />
+                      </RequireAuth>
                     }
                   />
                   <Route
