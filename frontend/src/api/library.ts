@@ -1,4 +1,5 @@
 import { rawGet, rawSend } from './client'
+import type { ContentSummary } from './types'
 
 export interface LibraryStatus {
   favorite: boolean
@@ -52,4 +53,34 @@ export async function removeFromList(
   rowId: number,
 ): Promise<void> {
   await rawSend('DELETE', `/api/v1/library/${kind}/${rowId}/`)
+}
+
+/** One saved library row, with the referenced content summarised inline.
+ *  `item` is null when the content it pointed at has since been removed. */
+export interface LibraryRow {
+  id: number
+  content_type: string
+  object_id: number
+  created_at: string
+  item: ContentSummary | null
+  /** Only present on `following` rows. */
+  notifications_enabled?: boolean | null
+}
+
+export interface LibraryPage {
+  count: number
+  next: string | null
+  previous: string | null
+  results: LibraryRow[]
+}
+
+/** A page of one library list, optionally narrowed to a single content type. */
+export function listLibrary(
+  kind: ListKind,
+  contentType?: string,
+  page = 1,
+): Promise<LibraryPage> {
+  const params = new URLSearchParams({ page: String(page) })
+  if (contentType) params.set('content_type', contentType)
+  return rawGet<LibraryPage>(`/api/v1/library/${kind}/?${params.toString()}`)
 }

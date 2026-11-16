@@ -16,6 +16,7 @@ import { HomePage } from '@/pages/HomePage'
 import { MoviesPage } from '@/pages/MoviesPage'
 import { TVPage } from '@/pages/TVPage'
 import { LoginPage } from '@/pages/LoginPage'
+import { LibraryPage } from '@/pages/LibraryPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { NotificationsPage } from '@/pages/NotificationsPage'
 import { OnboardingPage } from '@/pages/OnboardingPage'
@@ -103,7 +104,7 @@ function App() {
                     path="library"
                     element={
                       <RequireVerified>
-                        <ComingSoon title="Your library" />
+                        <LibraryPage />
                       </RequireVerified>
                     }
                   />
