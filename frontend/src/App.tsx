@@ -20,6 +20,7 @@ import { LibraryPage } from '@/pages/LibraryPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { NotificationsPage } from '@/pages/NotificationsPage'
 import { OnboardingPage } from '@/pages/OnboardingPage'
+import { RecommendationsPage } from '@/pages/RecommendationsPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
 import { SearchPage } from '@/pages/SearchPage'
@@ -98,6 +99,14 @@ function App() {
                       <RequireAuth>
                         <NotificationsPage />
                       </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="recommendations"
+                    element={
+                      <RequireVerified>
+                        <RecommendationsPage />
+                      </RequireVerified>
                     }
                   />
                   <Route
