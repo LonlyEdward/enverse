@@ -23,6 +23,7 @@ import { NotificationsPage } from '@/pages/NotificationsPage'
 import { OnboardingPage } from '@/pages/OnboardingPage'
 import { RecommendationsPage } from '@/pages/RecommendationsPage'
 import { RegisterPage } from '@/pages/RegisterPage'
+import { SettingsPage } from '@/pages/SettingsPage'
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
 import { SearchPage } from '@/pages/SearchPage'
 import { TeamDetailPage } from '@/pages/TeamDetailPage'
@@ -115,6 +116,14 @@ function App() {
                     element={
                       <RequireAuth>
                         <CalendarPage />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="settings"
+                    element={
+                      <RequireAuth>
+                        <SettingsPage />
                       </RequireAuth>
                     }
                   />

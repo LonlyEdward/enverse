@@ -1,4 +1,4 @@
-import { Bell, CalendarDays, Library, Sparkles } from 'lucide-react'
+import { Bell, CalendarDays, Library, Settings, Sparkles } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -42,12 +42,13 @@ interface QuickLink {
 function QuickLinks({ unread }: { unread: number }) {
   const links: QuickLink[] = [
     { to: '/library', label: 'Library', icon: Library },
-    { to: '/recommendations', label: 'For you', icon: Sparkles },
+    { to: '/recommendations', label: 'Recommendations', icon: Sparkles },
     { to: '/calendar', label: 'Calendar', icon: CalendarDays },
     { to: '/notifications', label: 'Alerts', icon: Bell, badge: unread },
+    { to: '/settings', label: 'Settings', icon: Settings },
   ]
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
       {links.map((link) => {
         const Icon = link.icon
         return (
@@ -97,8 +98,8 @@ function EventSection({
 function DashboardSkeleton() {
   return (
     <div className="space-y-8">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {Array.from({ length: 5 }).map((_, i) => (
           <Skeleton key={i} className="h-14 rounded-xl" />
         ))}
       </div>

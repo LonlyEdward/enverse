@@ -1,6 +1,34 @@
-import { api, rawGet } from './client'
+import { api, rawGet, rawSend } from './client'
 import { unwrap } from './errors'
 import type { ContentSummary } from './types'
+
+/** The user's notification preferences (lazily created server-side). */
+export interface NotificationPreferences {
+  in_app_enabled: boolean
+  email_enabled: boolean
+  notify_releases: boolean
+  notify_schedules: boolean
+  notify_updates: boolean
+  muted_genres: string[]
+}
+
+export function getNotificationPreferences(): Promise<NotificationPreferences> {
+  return rawGet<NotificationPreferences>(
+    '/api/v1/users/me/preferences/notifications/',
+  )
+}
+
+/** Patch any subset of the notification preferences; returns the full row. */
+export async function updateNotificationPreferences(
+  patch: Partial<NotificationPreferences>,
+): Promise<NotificationPreferences> {
+  const data = await rawSend<NotificationPreferences>(
+    'PATCH',
+    '/api/v1/users/me/preferences/notifications/',
+    patch,
+  )
+  return data as NotificationPreferences
+}
 
 export type GenreContentType = 'movie' | 'tv' | 'anime' | 'game'
 

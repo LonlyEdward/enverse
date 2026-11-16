@@ -56,6 +56,15 @@ export async function fetchMe(): Promise<User> {
   return unwrap(await api.GET('/api/v1/users/me/'))
 }
 
+/** Update the editable profile fields (display name, avatar URL). Email is
+ *  read-only server-side. Returns the refreshed user. */
+export async function updateProfile(patch: {
+  display_name?: string
+  avatar_url?: string
+}): Promise<User> {
+  return unwrap(await api.PATCH('/api/v1/users/me/', { body: patch }))
+}
+
 /** Blacklist the refresh token server-side, then drop local tokens. This is
  *  best-effort: tokens are cleared even if the network call fails. */
 export async function logout(): Promise<void> {

@@ -66,15 +66,24 @@ export function TopBar() {
               <Button variant="ghost" size="sm" onClick={handleLogout}>
                 Log out
               </Button>
-              <span
-                className="ml-1 flex h-9 w-9 items-center justify-center rounded-full bg-surface-3 text-sm font-semibold text-fg"
-                title={user?.email}
-                aria-hidden="true"
+              <NavLink
+                to="/settings"
+                title="Settings"
+                aria-label="Settings"
+                className="ml-1 flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-surface-3 text-sm font-semibold text-fg transition-shadow hover:ring-2 hover:ring-[var(--ring)]"
               >
-                {(user?.display_name || user?.email || '?')
-                  .charAt(0)
-                  .toUpperCase()}
-              </span>
+                {user?.avatar_url ? (
+                  <img
+                    src={user.avatar_url}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  (user?.display_name || user?.email || '?')
+                    .charAt(0)
+                    .toUpperCase()
+                )}
+              </NavLink>
             </div>
           ) : (
             status === 'anonymous' && (
