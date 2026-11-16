@@ -1,4 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
+import { lazy } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { queryClient } from '@/api/queryClient'
@@ -6,29 +7,81 @@ import { AuthProvider } from '@/auth/AuthContext'
 import { RequireAuth, RequireVerified } from '@/auth/guards'
 import { ToastProvider } from '@/components/toast'
 import { AppLayout } from '@/layout/AppLayout'
-import { AnimePage } from '@/pages/AnimePage'
-import { CalendarPage } from '@/pages/CalendarPage'
-import { DashboardPage } from '@/pages/DashboardPage'
-import { DetailPage } from '@/pages/DetailPage'
-import { FootballPage } from '@/pages/FootballPage'
-import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
-import { GamesPage } from '@/pages/GamesPage'
-import { HomePage } from '@/pages/HomePage'
-import { MoviesPage } from '@/pages/MoviesPage'
-import { TVPage } from '@/pages/TVPage'
-import { LoginPage } from '@/pages/LoginPage'
-import { LibraryPage } from '@/pages/LibraryPage'
-import { NotFoundPage } from '@/pages/NotFoundPage'
-import { NotificationsPage } from '@/pages/NotificationsPage'
-import { OnboardingPage } from '@/pages/OnboardingPage'
-import { RecommendationsPage } from '@/pages/RecommendationsPage'
-import { RegisterPage } from '@/pages/RegisterPage'
-import { SettingsPage } from '@/pages/SettingsPage'
-import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
-import { SearchPage } from '@/pages/SearchPage'
-import { TeamDetailPage } from '@/pages/TeamDetailPage'
-import { VerifyEmailPage } from '@/pages/VerifyEmailPage'
 import { ThemeProvider } from '@/lib/theme'
+// The landing and login pages are the common first paint, so they stay in the
+// main bundle. Every other route is a lazy chunk, loaded on first visit.
+import { HomePage } from '@/pages/HomePage'
+import { LoginPage } from '@/pages/LoginPage'
+
+// Pages use named exports; lazy() wants a default, so each loader re-maps it.
+const AnimePage = lazy(() =>
+  import('@/pages/AnimePage').then((m) => ({ default: m.AnimePage })),
+)
+const CalendarPage = lazy(() =>
+  import('@/pages/CalendarPage').then((m) => ({ default: m.CalendarPage })),
+)
+const DashboardPage = lazy(() =>
+  import('@/pages/DashboardPage').then((m) => ({ default: m.DashboardPage })),
+)
+const DetailPage = lazy(() =>
+  import('@/pages/DetailPage').then((m) => ({ default: m.DetailPage })),
+)
+const FootballPage = lazy(() =>
+  import('@/pages/FootballPage').then((m) => ({ default: m.FootballPage })),
+)
+const ForgotPasswordPage = lazy(() =>
+  import('@/pages/ForgotPasswordPage').then((m) => ({
+    default: m.ForgotPasswordPage,
+  })),
+)
+const GamesPage = lazy(() =>
+  import('@/pages/GamesPage').then((m) => ({ default: m.GamesPage })),
+)
+const LibraryPage = lazy(() =>
+  import('@/pages/LibraryPage').then((m) => ({ default: m.LibraryPage })),
+)
+const MoviesPage = lazy(() =>
+  import('@/pages/MoviesPage').then((m) => ({ default: m.MoviesPage })),
+)
+const NotFoundPage = lazy(() =>
+  import('@/pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
+)
+const NotificationsPage = lazy(() =>
+  import('@/pages/NotificationsPage').then((m) => ({
+    default: m.NotificationsPage,
+  })),
+)
+const OnboardingPage = lazy(() =>
+  import('@/pages/OnboardingPage').then((m) => ({ default: m.OnboardingPage })),
+)
+const RecommendationsPage = lazy(() =>
+  import('@/pages/RecommendationsPage').then((m) => ({
+    default: m.RecommendationsPage,
+  })),
+)
+const RegisterPage = lazy(() =>
+  import('@/pages/RegisterPage').then((m) => ({ default: m.RegisterPage })),
+)
+const ResetPasswordPage = lazy(() =>
+  import('@/pages/ResetPasswordPage').then((m) => ({
+    default: m.ResetPasswordPage,
+  })),
+)
+const SearchPage = lazy(() =>
+  import('@/pages/SearchPage').then((m) => ({ default: m.SearchPage })),
+)
+const SettingsPage = lazy(() =>
+  import('@/pages/SettingsPage').then((m) => ({ default: m.SettingsPage })),
+)
+const TVPage = lazy(() =>
+  import('@/pages/TVPage').then((m) => ({ default: m.TVPage })),
+)
+const TeamDetailPage = lazy(() =>
+  import('@/pages/TeamDetailPage').then((m) => ({ default: m.TeamDetailPage })),
+)
+const VerifyEmailPage = lazy(() =>
+  import('@/pages/VerifyEmailPage').then((m) => ({ default: m.VerifyEmailPage })),
+)
 
 function App() {
   return (

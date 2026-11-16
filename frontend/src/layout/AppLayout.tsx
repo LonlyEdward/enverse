@@ -1,6 +1,8 @@
+import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { Spinner } from '@/components/Spinner'
 import { VerifyEmailBanner } from '@/components/VerifyEmailBanner'
 import { BottomTabs } from './BottomTabs'
 import { TopBar } from './TopBar'
@@ -14,7 +16,16 @@ export function AppLayout() {
       <VerifyEmailBanner />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-24 pt-6 md:pb-10">
         <ErrorBoundary>
-          <Outlet />
+          {/* Routes are lazy chunks; the shell stays while one loads. */}
+          <Suspense
+            fallback={
+              <div className="flex min-h-[50vh] items-center justify-center">
+                <Spinner label="Loading page" />
+              </div>
+            }
+          >
+            <Outlet />
+          </Suspense>
         </ErrorBoundary>
       </main>
       <BottomTabs />
