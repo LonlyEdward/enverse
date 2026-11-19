@@ -34,7 +34,7 @@ export function TopBar() {
         <Logo />
 
         <nav
-          className="hidden items-center gap-1 md:flex"
+          className="hidden items-center gap-1 lg:flex"
           aria-label="Sections"
         >
           {SECTION_LINKS.map((link) => (

@@ -8,8 +8,8 @@ import { VerifyEmailBanner } from '@/components/VerifyEmailBanner'
 import { BottomTabs } from './BottomTabs'
 import { TopBar } from './TopBar'
 
-/** The app shell: top bar everywhere, bottom tabs on mobile, and the routed
- *  page in between. The extra bottom padding on mobile clears the tab bar. */
+/** The app shell: top bar everywhere, bottom tabs on mobile and tablet, and the
+ *  routed page in between. The extra bottom padding below lg clears the tab bar. */
 export function AppLayout() {
   return (
     <div className="flex min-h-svh flex-col">
@@ -25,7 +25,7 @@ export function AppLayout() {
       <VerifyEmailBanner />
       <main
         id="main-content"
-        className="mx-auto w-full max-w-7xl flex-1 px-4 pb-24 pt-6 md:pb-10"
+        className="mx-auto w-full max-w-7xl flex-1 px-4 pb-24 pt-6 lg:pb-10"
       >
         <ErrorBoundary>
           {/* Routes are lazy chunks; the shell stays while one loads. */}
