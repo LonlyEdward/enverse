@@ -25,7 +25,7 @@ export function AppLayout() {
       <VerifyEmailBanner />
       <main
         id="main-content"
-        className="mx-auto w-full max-w-7xl flex-1 px-4 pb-24 pt-6 lg:pb-10"
+        className="w-full flex-1 px-4 pb-24 pt-6 sm:px-6 lg:px-8 lg:pb-10"
       >
         <ErrorBoundary>
           {/* Routes are lazy chunks; the shell stays while one loads. */}
