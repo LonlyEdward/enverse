@@ -108,7 +108,10 @@ function DashboardSkeleton() {
           <Skeleton className="mb-3 h-6 w-48" />
           <div className="flex gap-4 overflow-hidden">
             {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="aspect-[2/3] w-32 shrink-0 rounded-xl sm:w-36" />
+              <Skeleton
+                key={i}
+                className="aspect-[2/3] w-40 shrink-0 rounded-xl sm:w-44"
+              />
             ))}
           </div>
         </div>

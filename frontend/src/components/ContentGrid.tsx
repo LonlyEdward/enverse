@@ -1,4 +1,5 @@
 import type { CardItem } from '@/api/types'
+import { POSTER_GRID } from '@/lib/grid'
 import { EmptyState } from './EmptyState'
 import { ErrorState } from './ErrorState'
 import { PosterCard } from './PosterCard'
@@ -14,8 +15,7 @@ interface ContentGridProps {
   emptyDescription?: string
 }
 
-const GRID =
-  'grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6'
+const GRID = POSTER_GRID
 
 /** Responsive poster grid with its own loading, empty and error states. */
 export function ContentGrid({

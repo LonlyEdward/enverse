@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { searchContent } from '@/api/preferences'
+import { POSTER_GRID } from '@/lib/grid'
 import { EmptyState } from '@/components/EmptyState'
 import { ErrorState } from '@/components/ErrorState'
 import { Input } from '@/components/Input'
@@ -62,7 +63,7 @@ export function SearchPage() {
         )}
 
         {enabled && query.isLoading && (
-          <div className="grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4 md:grid-cols-6">
+          <div className={POSTER_GRID}>
             {Array.from({ length: 12 }).map((_, i) => (
               <PosterSkeleton key={i} />
             ))}
@@ -89,7 +90,7 @@ export function SearchPage() {
                   />
                   {meta.plural}
                 </h2>
-                <div className="grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4 md:grid-cols-6">
+                <div className={POSTER_GRID}>
                   {items.map((item) => (
                     <PosterCard
                       key={`${item.content_type}-${item.id}`}

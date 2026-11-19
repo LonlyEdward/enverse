@@ -128,7 +128,7 @@ export function DetailPage({ contentType }: { contentType: string }) {
             <img
               src={poster}
               alt={title}
-              className="aspect-[2/3] w-32 shrink-0 rounded-xl object-cover shadow-[var(--poster-shadow)] sm:w-44"
+              className="aspect-[2/3] w-40 shrink-0 rounded-xl object-cover shadow-[var(--poster-shadow)] sm:w-52"
             />
           )}
           <div className="min-w-0 flex-1">

@@ -49,17 +49,17 @@ export function PosterRail({
         )}
       </div>
 
-      <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {loading
           ? Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="w-32 shrink-0 sm:w-36">
+              <div key={i} className="w-40 shrink-0 sm:w-44">
                 <PosterSkeleton />
               </div>
             ))
           : items?.map((item) => (
               <div
                 key={`${item.content_type}-${item.id}`}
-                className="w-32 shrink-0 sm:w-36"
+                className="w-40 shrink-0 sm:w-44"
               >
                 <PosterCard item={item} />
               </div>

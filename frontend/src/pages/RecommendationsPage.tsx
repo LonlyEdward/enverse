@@ -6,6 +6,7 @@ import { useRefreshRecommendations } from '@/api/hooks/recommendations'
 import type { Recommendation } from '@/api/recommendations'
 import { ApiError } from '@/api/errors'
 import type { CardItem } from '@/api/types'
+import { POSTER_GRID } from '@/lib/grid'
 import { Button } from '@/components/Button'
 import { EmptyState } from '@/components/EmptyState'
 import { ErrorState } from '@/components/ErrorState'
@@ -23,8 +24,7 @@ const TYPE_OPTIONS: FilterOption[] = [
   { value: 'game', label: 'Games' },
 ]
 
-const GRID =
-  'grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6'
+const GRID = POSTER_GRID
 
 function RecommendationCard({ rec }: { rec: Recommendation }) {
   if (!rec.item) return null
@@ -78,9 +78,7 @@ export function RecommendationsPage() {
       onError: (error) => {
         const tooMany = error instanceof ApiError && error.status === 429
         toast({
-          title: tooMany
-            ? 'You have refreshed recently'
-            : 'Could not refresh',
+          title: tooMany ? 'You have refreshed recently' : 'Could not refresh',
           description: tooMany
             ? 'Try again in a little while — this is limited to keep things fast.'
             : 'Please try again.',

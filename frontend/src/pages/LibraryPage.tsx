@@ -8,6 +8,7 @@ import { EmptyState } from '@/components/EmptyState'
 import { ErrorState } from '@/components/ErrorState'
 import { FilterBar } from '@/components/FilterBar'
 import type { FilterOption } from '@/components/FilterBar'
+import { POSTER_GRID } from '@/lib/grid'
 import { LibraryCard } from '@/components/LibraryCard'
 import { Pagination } from '@/components/Pagination'
 import { PosterSkeleton } from '@/components/Skeleton'
@@ -58,8 +59,7 @@ const TYPE_OPTIONS: FilterOption[] = [
   { value: 'football', label: 'Football' },
 ]
 
-const GRID =
-  'grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6'
+const GRID = POSTER_GRID
 
 function isKind(value: string): value is ListKind {
   return KIND_TABS.some((tab) => tab.value === value)
