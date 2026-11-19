@@ -2,24 +2,28 @@ import { Link } from 'react-router-dom'
 
 import { cn } from '@/lib/cn'
 
-/** The EnVerse wordmark: a compact play-mark plus the name. Used in the top
- *  bar and auth pages. */
+/** The EnVerse brand logo: the hexagon play-mark (shipped as an SVG asset in
+ *  /public/logos) beside the wordmark. The mark's gradient reads on any
+ *  background, and the wordmark is themed text so "En" stays legible in both
+ *  light and dark — the shipped full-logo image is dark-only. */
 export function Logo({ className }: { className?: string }) {
   return (
     <Link
       to="/"
       aria-label="EnVerse home"
-      className={cn('inline-flex items-center gap-2', className)}
+      className={cn(
+        'inline-flex items-center gap-2 rounded-md focus-visible:outline-none',
+        className,
+      )}
     >
-      <span
-        aria-hidden="true"
-        className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-on-brand"
-      >
-        <svg width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
-          <path d="M2.5 1.2v9.6a.5.5 0 0 0 .77.42l7.1-4.8a.5.5 0 0 0 0-.84l-7.1-4.8a.5.5 0 0 0-.77.42Z" />
-        </svg>
-      </span>
-      <span className="font-display text-lg font-bold tracking-tight">
+      <img
+        src="/logos/enverse-logo-icon.svg"
+        alt=""
+        width={120}
+        height={120}
+        className="h-8 w-8"
+      />
+      <span className="font-display text-xl font-bold tracking-tight">
         <span className="text-fg">En</span>
         <span className="text-brand">Verse</span>
       </span>

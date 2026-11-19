@@ -1,0 +1,17 @@
+<svg width="680" height="220" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>EnVerse logo</title>
+<desc>A logo mark of a solid gradient-filled hexagon core with a thin outer hexagon outline and a play triangle cut out at center, beside the wordmark EnVerse.</desc>
+<defs>
+<linearGradient id="gfinal" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#8b5cf6"/>
+<stop offset="100%" stop-color="#f59e0b"/>
+</linearGradient>
+</defs>
+<g transform="translate(110,110)">
+<polygon points="0,-58 50,-29 50,29 0,58 -50,29 -50,-29" fill="none" stroke="#c4b5fd" stroke-width="1.5" stroke-opacity="0.5"/>
+<path d="M0,-42 36,-21 36,21 0,42 -36,21 -36,-21 Z M -12,-16 20,0 -12,16 Z" fill="url(#gfinal)" fill-rule="evenodd"/>
+</g>
+<g font-family="-apple-system, 'Segoe UI', Arial, sans-serif" transform="translate(220,140)">
+<text x="0" y="0" font-size="76" font-weight="700" fill="#f5f3ff">En<tspan fill="#a78bfa">Verse</tspan></text>
+</g>
+</svg>

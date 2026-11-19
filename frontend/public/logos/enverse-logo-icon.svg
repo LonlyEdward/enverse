@@ -1,0 +1,14 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>EnVerse icon</title>
+<desc>A solid gradient-filled hexagon core with a thin outer hexagon outline and a play triangle cut out at center.</desc>
+<defs>
+<linearGradient id="gicon" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#8b5cf6"/>
+<stop offset="100%" stop-color="#f59e0b"/>
+</linearGradient>
+</defs>
+<g transform="translate(60,60)">
+<polygon points="0,-58 50,-29 50,29 0,58 -50,29 -50,-29" fill="none" stroke="#c4b5fd" stroke-width="1.5" stroke-opacity="0.5"/>
+<path d="M0,-42 36,-21 36,21 0,42 -36,21 -36,-21 Z M -12,-16 20,0 -12,16 Z" fill="url(#gicon)" fill-rule="evenodd"/>
+</g>
+</svg>
