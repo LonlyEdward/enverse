@@ -10,7 +10,8 @@
    Direction: poster-forward, cinematic, dark by default. Surfaces are a deep
    cool black (not pure OLED) so posters supply the colour. One accent hue per
    content type is the signature system, reused on badges, tabs and calendar
-   dots. The rose brand accent is reserved for primary actions only.
+   dots. The violet brand accent (matching the EnVerse logo) is reserved for
+   primary actions only.
 --------------------------------------------------------------------------- */
 :root,
 :root[data-theme='dark'] {
@@ -25,8 +26,8 @@
   --fg-muted: #9a9aa8;
   --fg-subtle: #6b6b78;
 
-  --brand: #f43f5e;
-  --brand-hover: #fb5a74;
+  --brand: #8b5cf6;
+  --brand-hover: #a78bfa;
   --on-brand: #ffffff;
 
   --danger: #f87171;
@@ -34,7 +35,7 @@
   --warning: #fbbf24;
   --info: #60a5fa;
 
-  --ring: #fb5a74;
+  --ring: #a78bfa;
 
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-pop: 0 12px 32px -8px rgb(0 0 0 / 0.6);
@@ -53,8 +54,8 @@
   --fg-muted: #5a5a66;
   --fg-subtle: #8a8a96;
 
-  --brand: #e11d48;
-  --brand-hover: #be123c;
+  --brand: #7c3aed;
+  --brand-hover: #6d28d9;
   --on-brand: #ffffff;
 
   --danger: #dc2626;
@@ -62,7 +63,7 @@
   --warning: #d97706;
   --info: #2563eb;
 
-  --ring: #e11d48;
+  --ring: #7c3aed;
 
   --shadow-card: 0 1px 2px rgb(15 15 25 / 0.08);
   --shadow-pop: 0 12px 32px -8px rgb(15 15 25 / 0.18);
